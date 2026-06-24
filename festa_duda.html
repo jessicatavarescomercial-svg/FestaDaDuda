@@ -111,8 +111,6 @@ tr.row-danger td{background:#FEE2E2!important}
 </head>
 <body>
 
-<div id="loading-overlay" class="loading-overlay">
-  <div class="loading-spinner"></div>
   <div class="loading-txt">Carregando festa da Duda... 🎉</div>
 </div>
 
@@ -127,8 +125,6 @@ tr.row-danger td{background:#FEE2E2!important}
   </div>
 </div>
 
-<div class="sync-bar">
-  <div class="sync-dot" id="sync-dot"></div>
   <span id="sync-txt">Conectado – dados sincronizados em tempo real</span>
 </div>
 
@@ -222,73 +218,134 @@ tr.row-danger td{background:#FEE2E2!important}
 </div>
 
 <script>
-// ── CONFIG GIST ───────────────────────────────────
-var GIST_ID = 'd74f9f6cfa69b46fb4f2aff00bdaf7ab';
-var GIST_TOKEN = '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';
-var GIST_FILE = 'festa_duda.json';
-var GIST_API = 'https://api.github.com/gists/' + GIST_ID;
+var KEY = 'festa_duda_v4';
 
-var DB = null;
-var saveTimer = null;
-
-// ── SYNC ─────────────────────────────────────────
-function setSyncStatus(status, msg) {
-  var dot = document.getElementById('sync-dot');
-  var txt = document.getElementById('sync-txt');
-  dot.className = 'sync-dot' + (status ? ' ' + status : '');
-  txt.textContent = msg;
+function getDefault() {
+  return {
+    orc:[
+      {id:1,item:'Recreador',cat:'Entretenimento',prev:420,pago:0,ok:false,obs:'2 horas'},
+      {id:2,item:'Bolo',cat:'Alimentação',prev:360,pago:0,ok:false,obs:'4kg – Stitch K-Pop'},
+      {id:3,item:'Docinhos',cat:'Alimentação',prev:220,pago:0,ok:false,obs:'110 unid / 100 docinhos'},
+      {id:4,item:'Cupcakes',cat:'Alimentação',prev:100,pago:0,ok:false,obs:'30 unid'},
+      {id:5,item:'Fantasia K-Pop',cat:'Vestuário',prev:90,pago:0,ok:false,obs:'Duda'},
+      {id:6,item:'300 Salgados',cat:'Alimentação',prev:210,pago:0,ok:false,obs:''},
+      {id:7,item:'Pão de Metro',cat:'Alimentação',prev:269.7,pago:0,ok:false,obs:''},
+      {id:8,item:'Patê de Atum',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:9,item:'Patê de Alho',cat:'Alimentação',prev:40,pago:0,ok:false,obs:''},
+      {id:10,item:'Gelatina',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:11,item:'Torrada',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:12,item:'Pão com Salsicha',cat:'Alimentação',prev:150,pago:0,ok:false,obs:''},
+      {id:13,item:'Suco',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'6 caixas'},
+      {id:14,item:'Refrigerante',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'12 garrafas'},
+      {id:15,item:'Água',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'8 garrafas'},
+      {id:16,item:'Cerveja',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'10 fardos'},
+      {id:17,item:'Decoração',cat:'Decoração',prev:0,pago:0,ok:false,obs:'Ver aba Compras'}
+    ],
+    conv:[
+      {id:1,nome:'Mãe da Yasmin',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:2,nome:'Pai da Yasmin',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:3,nome:'Tânia',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:4,nome:'Ana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:5,nome:'Tatsu',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:6,nome:'Natália',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:7,nome:'Cristina',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:8,nome:'Érica',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:9,nome:'Mó',tipo:'adulto',grupo:'',qtd:1,conf:'incerto',obs:'Provavelmente vai apenas um responsável'},
+      {id:10,nome:'Silas',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:11,nome:'Luana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:12,nome:'Fernando',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:13,nome:'Paulinho',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:14,nome:'Dani',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:15,nome:'Tatian Deri',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:16,nome:'Fábio',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:17,nome:'Mariana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:18,nome:'Tainá',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:19,nome:'Má',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:20,nome:'Thaís',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:21,nome:'Rosilda',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:22,nome:'Pietra',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:23,nome:'Calvim',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:24,nome:'Larissa',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:25,nome:'Duda',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:'🎂 Aniversariante'},
+      {id:26,nome:'Yasmin Querido',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:27,nome:'Lavínia',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:28,nome:'Maria (filha da Natália)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:29,nome:'Cauã',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:30,nome:'Isadora',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:31,nome:'Bia',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:32,nome:'Sara',tipo:'crianca',grupo:'',qtd:1,conf:'incerto',obs:'Presença incerta'},
+      {id:33,nome:'Heloísa',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:34,nome:'Maria Helena',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:35,nome:'Maju',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:36,nome:'Henry',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:37,nome:'Lara',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:38,nome:'Davi',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:39,nome:'Arthur',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:40,nome:'Maria (filha da Thaís)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:41,nome:'Maria (filha da Pietra)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:42,nome:'Teo',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:43,nome:'Apolo',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:44,nome:'Manu',tipo:'adolescente',grupo:'',qtd:1,conf:'sim',obs:'14 anos'}
+    ],
+    forn:[
+      {id:1,cat:'Entretenimento',nome:'Recreador',contato:'',contrat:420,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:2,cat:'Alimentação',nome:'Confeitaria (Bolo)',contato:'',contrat:360,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:3,cat:'Alimentação',nome:'Docinhos',contato:'',contrat:220,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:4,cat:'Alimentação',nome:'Cupcakes',contato:'',contrat:100,pago:0,venc:'',contrato:false,status:'pendente'}
+    ],
+    comp:[
+      {id:1,item:'Kit Slime Bolinha Stitch 12g',cat:'Lembrancinhas',link:'https://shopee.com.br/KIT-SLIME-BOLINHA-DO-STICH-12grs-KIT-FESTAS-LEMBRANCINHA-INFANTIL-GELECA-i.687929303.22293896595',qtd:1,val:0,comprado:false,recebido:false},
+      {id:2,item:'Sacolinhas Personalizadas (Kit 10-50)',cat:'Lembrancinhas',link:'https://shopee.com.br/Kit-10-a-50-Sacolinhas-Personalizadas-Qualquer-Tema-Festa-Infantil-Lembrancinhas-Anivers%C3%A1rio-Pegue-e-Monte-Ch%C3%A1-de-Beb%C3%AA-i.381657027.23199175184',qtd:1,val:0,comprado:false,recebido:false},
+      {id:3,item:'Kit 30 Massinha + 30 Bolha Sabão + 30 Cortador',cat:'Lembrancinhas',link:'https://shopee.com.br/Kit-30-Massinha-de-Modelar-30-Bolha-de-Sab%C3%A3o-30-Cortador-Forminha-Infantil-Lembrancinha-i.1233355702.22894184813',qtd:1,val:0,comprado:false,recebido:false},
+      {id:4,item:'Bandeirolas Personalizadas Stitch (6 un)',cat:'Decoração',link:'https://shopee.com.br/Bandeirolas-personalizadas-Festa-Infantil-6-Unidades-Temas-i.1224599212.22494772899',qtd:1,val:0,comprado:false,recebido:false},
+      {id:5,item:'Toalha de Mesa Rosa Bebê 140x220cm',cat:'Decoração',link:'https://shopee.com.br/Toalha-de-Mesa-Lisa-Para-Festas-Retangular-140x220cm-Rosa-Bebe-i.749241184.22397122671',qtd:1,val:0,comprado:false,recebido:false},
+      {id:6,item:'Centro de Mesa Stitch e Angel',cat:'Decoração',link:'https://shopee.com.br/Centro-de-Mesa-Stitch-e-Angel-Anivers%C3%A1rio-Infantil-Decora%C3%A7%C3%A3o-Festa-Infantil-Lembrancinha-i.692266466.22593651008',qtd:1,val:0,comprado:false,recebido:false},
+      {id:7,item:'Bandeirinha 16m com 120 Estrelinhas Rosa',cat:'Decoração',link:'https://shopee.com.br/16m-de-Bandeirinha-com-120-Estrelinhas-para-Decora%C3%A7%C3%A3o-Festa-Anivers%C3%A1rio-banner-painel-Estrelas-Rosa-i.399106530.22093555593',qtd:1,val:0,comprado:false,recebido:false},
+      {id:8,item:'Kit 102 Balões Macaron (5/10/12/18 pol)',cat:'Decoração',link:'https://shopee.com.br/Kit-102-Pe%C3%A7as-Bal%C3%B5es-5-10-12-18-Coloridos-Macaron-Para-Festas-e-Anivers%C3%A1rios-Com-Fita-i.1727488347.22699467545',qtd:1,val:0,comprado:false,recebido:false},
+      {id:9,item:'Faixa Flâmula Rosa e Azul c/ Glitter',cat:'Decoração',link:'https://shopee.com.br/Faixa-Decorativa-Especial-Estilo-Fl%C3%A2mula-Bandeirinhas-Rosa-e-Azul-com-Glitter-i.522417487.22993677471',qtd:1,val:0,comprado:false,recebido:false},
+      {id:10,item:'Kit Festa K-Pop 24 Itens',cat:'Decoração',link:'https://shopee.com.br/Kit-Festa-Guerreiras-Do-K-pop-Kit-Meninas-Do-Kpop-24-Itens-i.1077227121.51354417604',qtd:1,val:0,comprado:false,recebido:false}
+    ],
+    lemb:[
+      {id:1,item:'Kit Slime Bolinha Stitch',qn:25,qc:0,cu:0,ok:false},
+      {id:2,item:'Sacolinhas Personalizadas',qn:25,qc:0,cu:0,ok:false},
+      {id:3,item:'Massinha de Modelar',qn:25,qc:0,cu:0,ok:false},
+      {id:4,item:'Bolha de Sabão',qn:25,qc:0,cu:0,ok:false},
+      {id:5,item:'Cortador Forminha',qn:25,qc:0,cu:0,ok:false}
+    ],
+    ck:[
+      {id:1,txt:'Confirmar recreador – data, horário e valor',done:false},
+      {id:2,txt:'Fechar pedido do bolo (4kg Stitch K-Pop)',done:false},
+      {id:3,txt:'Fechar pedido docinhos e cupcakes',done:false},
+      {id:4,txt:'Comprar fantasia K-Pop para a Duda',done:false},
+      {id:5,txt:'Fazer pedidos Shopee – decoração',done:false},
+      {id:6,txt:'Fazer pedidos Shopee – lembrancinhas',done:false},
+      {id:7,txt:'Confirmar lista final de convidados',done:false},
+      {id:8,txt:'Comprar salgados e pão de metro',done:false},
+      {id:9,txt:'Comprar bebidas (suco, refri, água, cerveja)',done:false},
+      {id:10,txt:'Montar lembrancinhas nas sacolinhas',done:false},
+      {id:11,txt:'Preparar playlist K-Pop + músicas do Stitch',done:false},
+      {id:12,txt:'Montar mesa de doces no dia da festa',done:false},
+      {id:13,txt:'Preparar gelatinas',done:false},
+      {id:14,txt:'Preparar patês',done:false},
+      {id:15,txt:'Preparar cachorro quente',done:false}
+    ],
+    pag:[],
+    notes:'Local: Casa da Duda – Rua Anis Chakur, 91, Jardim Alvorada\n\nConvidados:\n  Adultos: 24 (ou 23 se vier apenas Érica ou Mó)\n  Crianças: 19 (+Sara = 20)\n  Adolescente: Manu (14 anos)\n  TOTAL: ~44-45 pessoas\n',
+    nid:{orc:18,conv:45,forn:5,comp:11,lemb:6,ck:16,pag:1}
+  };
 }
 
-function loadFromGist(callback) {
-  setSyncStatus('saving', 'Carregando dados...');
-  fetch(GIST_API, {
-    headers: {
-      'Authorization': 'token ' + GIST_TOKEN,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    var content = data.files[GIST_FILE].content;
-    DB = JSON.parse(content);
-    setSyncStatus('', 'Conectado – dados sincronizados ✅');
-    document.getElementById('loading-overlay').style.display = 'none';
-    if (callback) callback();
-  })
-  .catch(function(e) {
-    setSyncStatus('error', 'Erro ao conectar – verifique a internet');
-    document.getElementById('loading-overlay').style.display = 'none';
-  });
+// Sempre carrega os dados padrão no início, mas preserva edições do localStorage
+function load() {
+  try {
+    var s = localStorage.getItem(KEY);
+    if (s) return JSON.parse(s);
+    var def = getDefault();
+    localStorage.setItem(KEY, JSON.stringify(def));
+    return def;
+  } catch(e) { return getDefault(); }
 }
-
-function saveToGist() {
-  if (!DB) return;
-  setSyncStatus('saving', 'Salvando...');
-  var body = {};
-  body.files = {};
-  body.files[GIST_FILE] = { content: JSON.stringify(DB, null, 2) };
-  fetch(GIST_API, {
-    method: 'PATCH',
-    headers: {
-      'Authorization': 'token ' + GIST_TOKEN,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
-  .then(function(r) { return r.json(); })
-  .then(function() {
-    setSyncStatus('', 'Salvo em ' + new Date().toLocaleTimeString('pt-BR') + ' ✅');
-  })
-  .catch(function() {
-    setSyncStatus('error', 'Erro ao salvar – tente novamente');
-  });
-}
-
-function scheduleSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveToGist, 1200);
-}
+function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
 
 // ── NAV ──────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(function(btn) {
@@ -318,8 +375,8 @@ setInterval(updateCd,1000); updateCd();
 
 // ── DASHBOARD ────────────────────────────────────
 function renderDash() {
-  if (!DB) return;
-  var d = DB;
+  
+  var d = load();
   var totalConv=d.conv.reduce(function(s,c){return s+Number(c.qtd);},0);
   var confCount=d.conv.filter(function(c){return c.conf==='sim';}).length;
   var totalPrev=d.orc.reduce(function(s,o){return s+Number(o.prev);},0);
@@ -345,7 +402,7 @@ function pg(lbl,pct){return '<div class="prog-row"><div class="prog-head"><span>
 
 // ── ORÇAMENTO ────────────────────────────────────
 function renderOrc() {
-  if(!DB)return; var tp=0,tpg=0;
+   var tp=0,tpg=0;
   var rows=DB.orc.map(function(o){
     tp+=Number(o.prev)||0; tpg+=Number(o.pago)||0;
     var sal=Math.max(0,(Number(o.prev)||0)-(Number(o.pago)||0));
@@ -369,7 +426,7 @@ function addOrc(){DB.orc.push({id:DB.nid.orc++,item:'Novo item',cat:'',prev:0,pa
 
 // ── CONVIDADOS ───────────────────────────────────
 function renderConv() {
-  if(!DB)return; var na=0,nc=0,nconf=0,i=0;
+   var na=0,nc=0,nconf=0,i=0;
   var rows=DB.conv.map(function(c){
     i++; na+=(c.tipo==='adulto'?Number(c.qtd):0); nc+=(c.tipo==='crianca'?Number(c.qtd):0); nconf+=(c.conf==='sim'?Number(c.qtd):0);
     var sel=function(v){return '<option value="'+v+'" '+(c.conf===v?'selected':'')+'>'+({'sim':'✅ Sim','nao':'❌ Não','incerto':'❓ Incerto'}[v])+'</option>';};
@@ -393,7 +450,7 @@ function addConv(){DB.conv.push({id:DB.nid.conv++,nome:'Novo Convidado',tipo:'ad
 
 // ── FORNECEDORES ─────────────────────────────────
 function renderForn() {
-  if(!DB)return;
+  
   var rows=DB.forn.map(function(f){
     var sal=Math.max(0,(Number(f.contrat)||0)-(Number(f.pago)||0));
     return '<tr><td><input type="text" value="'+esc(f.cat)+'" onchange="updForn('+f.id+',\'cat\',this.value)" style="width:90px"></td>'+
@@ -415,7 +472,7 @@ function addForn(){DB.forn.push({id:DB.nid.forn++,cat:'',nome:'Novo Fornecedor',
 
 // ── COMPRAS ──────────────────────────────────────
 function renderComp() {
-  if(!DB)return;
+  
   var rows=DB.comp.map(function(c){
     var tot=(Number(c.qtd)||1)*(Number(c.val)||0);
     var lnk=c.link?'<a href="'+c.link+'" target="_blank" class="lnk">🛍 Ver</a>':'–';
@@ -438,7 +495,7 @@ function addComp(){DB.comp.push({id:DB.nid.comp++,item:'Novo item',cat:'',link:'
 
 // ── LEMBRANCINHAS ────────────────────────────────
 function renderLemb() {
-  if(!DB)return;
+  
   var rows=DB.lemb.map(function(l){
     var tot=(Number(l.qn)||0)*(Number(l.cu)||0);
     return '<tr><td><input type="text" value="'+esc(l.item)+'" onchange="updLemb('+l.id+',\'item\',this.value)"></td>'+
@@ -457,7 +514,7 @@ function addLemb(){DB.lemb.push({id:DB.nid.lemb++,item:'Novo item',qn:1,qc:0,cu:
 
 // ── CHECKLIST ────────────────────────────────────
 function renderCk() {
-  if(!DB)return;
+  
   var html=DB.ck.map(function(c){
     return '<div class="ck-item'+(c.done?' done':'')+'" id="ck-'+c.id+'">'+
       '<input type="checkbox" '+(c.done?'checked':'')+' onchange="togCk('+c.id+',this.checked)">'+
@@ -473,7 +530,7 @@ function addCk(){var inp=document.getElementById('ck-input');var txt=inp.value.t
 
 // ── PAGAMENTOS ───────────────────────────────────
 function renderPag() {
-  if(!DB)return;
+  
   var hoje=new Date();
   var rows=DB.pag.map(function(p){
     var venc=p.venc?new Date(p.venc):null;
@@ -495,15 +552,17 @@ function delPag(id){DB.pag=DB.pag.filter(function(x){return x.id!==id;});schedul
 function addPag(){DB.pag.push({id:DB.nid.pag++,desc:'',forn:'',val:0,venc:'',pago:false,dpag:''});scheduleSave();renderPag();}
 
 // ── ANOTAÇÕES ────────────────────────────────────
-function loadNotes(){if(!DB)return;document.getElementById('notes-ta').value=DB.notes||'';}
-function saveNotes(){if(!DB)return;DB.notes=document.getElementById('notes-ta').value;scheduleSave();var ok=document.getElementById('notes-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';},2000);}
+function loadNotes(){document.getElementById('notes-ta').value=DB.notes||'';}
+function saveNotes(){DB.notes=document.getElementById('notes-ta').value;scheduleSave();var ok=document.getElementById('notes-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';},2000);}
 
 // ── UTILS ────────────────────────────────────────
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function emptyRow(cols,msg){return '<tr class="empty-row"><td colspan="'+cols+'">'+(msg||'Nenhum item cadastrado.')+'</td></tr>';}
 
 // ── INIT ─────────────────────────────────────────
-loadFromGist(function() { renderDash(); });
+window.addEventListener('DOMContentLoaded', function(){ renderDash(); });
+
 </script>
+
 </body>
 </html>
