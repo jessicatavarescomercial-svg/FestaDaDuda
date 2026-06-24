@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Festa da Duda – Stitch encontra K-Pop</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap');
+:root {
+  --pink:#FF6FB8; --pink-l:#FFD6EC; --pink-p:#FFF0F8;
+  --purple:#A855F7; --purple-l:#E9D5FF; --purple-p:#F5F0FF;
+  --blue:#60B8FF; --blue-l:#DBEAFE;
+  --text:#3B2059; --soft:#8B6FAA; --border:#EDD9F7;
+  --white:#fff; --success:#22C55E; --warn:#F59E0B; --danger:#EF4444;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#FFF0F8 0%,#F3E8FF 50%,#EFF6FF 100%);color:var(--text);min-height:100vh}
+.hero{background:linear-gradient(135deg,#FF6FB8,#A855F7 50%,#60B8FF);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'⭐ 🎵 💜 🌟 🎶 💙 ⭐ 🎵 💜 🌟 🎶 💙 ⭐ 🎵 💜 🌟 🎶 💙';position:absolute;top:6px;left:0;right:0;font-size:16px;opacity:.3;white-space:nowrap;animation:ticker 24s linear infinite}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero-title{font-family:'Pacifico',cursive;font-size:clamp(1.8rem,5vw,3rem);color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,.15);line-height:1.1}
+.hero-sub{color:rgba(255,255,255,.92);font-size:1rem;font-weight:800;margin-top:5px;letter-spacing:1px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.badge{background:rgba(255,255,255,.22);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:5px 14px;font-size:.82rem;font-weight:700}
+.sync-bar{background:rgba(255,255,255,.15);text-align:center;padding:6px;font-size:.78rem;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.sync-dot.saving{background:#FCD34D;animation:none}
+.sync-dot.error{background:#FCA5A5;animation:none}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.93);backdrop-filter:blur(12px);border-bottom:2px solid var(--border)}
+.nav{display:flex;overflow-x:auto;gap:2px;scrollbar-width:none;max-width:1100px;margin:0 auto;padding:0 8px}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:none;cursor:pointer;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;color:var(--soft);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{color:var(--purple);border-bottom-color:var(--pink)}
+.container{max-width:1100px;margin:0 auto;padding:22px 14px 60px}
+.section{display:none;animation:fadeUp .3s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-title{font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--purple);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.card{background:#fff;border-radius:18px;border:1.5px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:0 4px 18px rgba(168,85,247,.07)}
+.card-title{font-weight:800;color:var(--purple);margin-bottom:12px;font-size:.95rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border-radius:16px;padding:16px;text-align:center;border:1.5px solid var(--border);box-shadow:0 4px 14px rgba(168,85,247,.07)}
+.stat-icon{font-size:1.8rem;margin-bottom:4px}
+.stat-val{font-size:1.5rem;font-weight:900;color:var(--purple);line-height:1}
+.stat-lbl{font-size:.74rem;color:var(--soft);font-weight:700;margin-top:3px}
+.prog-row{margin-bottom:10px}
+.prog-head{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;margin-bottom:4px}
+.prog-bar{height:9px;border-radius:999px;background:var(--border)}
+.prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .5s}
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:480px){.totals{grid-template-columns:1fr}}
+.tot{border-radius:14px;padding:13px;text-align:center}
+.tot .v{font-size:1.2rem;font-weight:900}
+.tot .l{font-size:.72rem;font-weight:700;margin-top:2px}
+.tot-a{background:var(--blue-l);color:#1e40af}
+.tot-b{background:#DCFCE7;color:#15803d}
+.tot-c{background:#FEF3C7;color:#92400e}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:800;padding:9px 11px;text-align:left;white-space:nowrap}
+th:first-child{border-radius:10px 0 0 0}th:last-child{border-radius:0 10px 0 0}
+td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--pink-p)}
+tr:hover td{background:var(--purple-l)}
+.empty-row td{text-align:center;color:var(--soft);padding:20px;font-style:italic}
+input[type=text],input[type=number],input[type=date],select,textarea{font-family:'Nunito',sans-serif;font-size:.82rem;border:1.5px solid var(--border);border-radius:8px;padding:5px 8px;width:100%;background:#fff;color:var(--text);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:var(--purple);flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-radius:999px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.83rem;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;box-shadow:0 4px 12px rgba(168,85,247,.28)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(168,85,247,.38)}
+.btn-danger{background:#FEE2E2;color:var(--danger)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+.btn-add{margin-top:12px}
+.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.73rem;font-weight:700;white-space:nowrap}
+.ch-g{background:#DCFCE7;color:#15803d}.ch-r{background:#FEE2E2;color:#991b1b}
+.ch-y{background:#FEF3C7;color:#92400e}.ch-b{background:var(--blue-l);color:#1e40af}
+.ck-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ck-item:last-child{border-bottom:none}
+.ck-item.done .ck-txt{text-decoration:line-through;color:var(--soft)}
+.ck-txt{flex:1;font-size:.9rem}
+.ck-add{display:flex;gap:8px;margin-top:12px}
+.ck-add input{flex:1}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.info-grid{grid-template-columns:1fr}}
+.info-block label{display:block;font-size:.72rem;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.info-block .iv{font-size:.95rem;font-weight:700}
+.cd-wrap{background:linear-gradient(135deg,var(--purple),var(--pink));border-radius:18px;padding:18px;text-align:center;color:#fff;margin-bottom:18px}
+.cd-lbl{font-size:1rem;font-weight:800;margin-bottom:10px}
+.cd-units{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cu-num{font-size:2.2rem;font-weight:900;line-height:1}
+.cu-lbl{font-size:.68rem;font-weight:700;opacity:.85}
+a.lnk{color:var(--purple);font-weight:700;text-decoration:none;font-size:.8rem}
+a.lnk:hover{text-decoration:underline}
+.notes-ta{width:100%;min-height:160px;resize:vertical;border-radius:14px;padding:13px;font-size:.92rem;line-height:1.6}
+.dash-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.dash-two{grid-template-columns:1fr}}
+.tag-a{background:#EDE9FE;color:#5b21b6;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+.tag-c{background:#FCE7F3;color:#9d174d;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+.tag-t{background:var(--blue-l);color:#1e40af;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+tr.row-alert td{background:#FEF3C7!important}
+tr.row-danger td{background:#FEE2E2!important}
+.loading-overlay{position:fixed;inset:0;background:rgba(168,85,247,.12);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:12px}
+.loading-spinner{width:48px;height:48px;border:4px solid var(--purple-l);border-top-color:var(--purple);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-weight:800;color:var(--purple);font-size:1rem}
+</style>
+</head>
+<body>
+
+<div id="loading-overlay" class="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-txt">Carregando festa da Duda... 🎉</div>
+</div>
+
+<div class="hero">
+  <div class="hero-title">🎉 Festa da Duda</div>
+  <div class="hero-sub">✨ Stitch encontra K-Pop ✨</div>
+  <div class="hero-badges">
+    <span class="badge">📅 09/07/2026 às 16h</span>
+    <span class="badge">📍 Casa da Duda</span>
+    <span class="badge">🎂 4 aninhos</span>
+    <span class="badge">🏠 Rua Anis Chakur, 91</span>
+  </div>
+</div>
+
+<div class="sync-bar">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-txt">Conectado – dados sincronizados em tempo real</span>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav">
+    <button class="nav-btn active" data-sec="dashboard">🏠 Início</button>
+    <button class="nav-btn" data-sec="info">📋 Informações</button>
+    <button class="nav-btn" data-sec="orcamento">💰 Orçamento</button>
+    <button class="nav-btn" data-sec="convidados">👥 Convidados</button>
+    <button class="nav-btn" data-sec="fornecedores">🤝 Fornecedores</button>
+    <button class="nav-btn" data-sec="compras">🛒 Compras</button>
+    <button class="nav-btn" data-sec="lembrancinhas">🎁 Lembrancinhas</button>
+    <button class="nav-btn" data-sec="checklist">✅ Checklist</button>
+    <button class="nav-btn" data-sec="pagamentos">💳 Pagamentos</button>
+    <button class="nav-btn" data-sec="anotacoes">📝 Anotações</button>
+  </div>
+</div>
+
+<div class="container">
+<div id="sec-dashboard" class="section active">
+  <div class="cd-wrap"><div class="cd-lbl">⏳ Contagem Regressiva para a Festa!</div><div class="cd-units" id="countdown"></div></div>
+  <div class="stats-grid" id="dash-stats"></div>
+  <div class="dash-two"><div class="card" id="dash-prog"></div><div class="card" id="dash-pend"></div></div>
+</div>
+<div id="sec-info" class="section">
+  <div class="sec-title">📋 Informações Gerais</div>
+  <div class="card">
+    <div class="info-grid">
+      <div class="info-block"><label>Nome da Festa</label><div class="iv">Festa da Duda 🎉</div></div>
+      <div class="info-block"><label>Tema</label><div class="iv">Stitch encontra K-Pop 💙🎵</div></div>
+      <div class="info-block"><label>Data</label><div class="iv">09 de Julho de 2026 – Quinta-feira (Feriado)</div></div>
+      <div class="info-block"><label>Horário</label><div class="iv">16h00</div></div>
+      <div class="info-block"><label>Local</label><div class="iv">Casa da Duda</div></div>
+      <div class="info-block"><label>Endereço</label><div class="iv">Rua Anis Chakur, 91 – Jardim Alvorada</div></div>
+      <div class="info-block"><label>Aniversariante</label><div class="iv">Duda – 4 anos 🎂</div></div>
+      <div class="info-block"><label>Estimativa de Convidados</label><div class="iv">~45 pessoas</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎨 Paleta de Cores do Tema</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#FF6FB8;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Rosa</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#A855F7;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Lilás</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#60B8FF;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Azul</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#FFD6EC;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Rosa Claro</div></div>
+    </div>
+  </div>
+</div>
+<div id="sec-orcamento" class="section">
+  <div class="sec-title">💰 Orçamento</div>
+  <div class="totals">
+    <div class="tot tot-a"><div class="v" id="t-prev">R$ 0</div><div class="l">💸 Previsto</div></div>
+    <div class="tot tot-b"><div class="v" id="t-pago">R$ 0</div><div class="l">✅ Pago</div></div>
+    <div class="tot tot-c"><div class="v" id="t-pend">R$ 0</div><div class="l">⏳ Pendente</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Categoria</th><th>Previsto R$</th><th>Pago R$</th><th>Saldo</th><th>Pago?</th><th>Obs</th><th></th></tr></thead><tbody id="tb-orc"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addOrc()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-convidados" class="section">
+  <div class="sec-title">👥 Lista de Convidados</div>
+  <div class="totals">
+    <div class="tot tot-a"><div class="v" id="t-adultos">0</div><div class="l">👨‍👩 Adultos</div></div>
+    <div class="tot tot-b"><div class="v" id="t-criancas">0</div><div class="l">👧 Crianças</div></div>
+    <div class="tot tot-c"><div class="v" id="t-conf">0</div><div class="l">✅ Confirmados</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Nome</th><th>Tipo</th><th>Família/Grupo</th><th>Qtd</th><th>Confirmado?</th><th>Obs</th><th></th></tr></thead><tbody id="tb-conv"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addConv()">➕ Adicionar Convidado</button></div>
+</div>
+<div id="sec-fornecedores" class="section">
+  <div class="sec-title">🤝 Fornecedores</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Categoria</th><th>Fornecedor</th><th>Contato</th><th>Contratado R$</th><th>Pago R$</th><th>Saldo</th><th>Vencimento</th><th>Contrato?</th><th>Status</th><th></th></tr></thead><tbody id="tb-forn"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addForn()">➕ Adicionar Fornecedor</button></div>
+</div>
+<div id="sec-compras" class="section">
+  <div class="sec-title">🛒 Lista de Compras</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Categoria</th><th>Link</th><th>Qtd</th><th>Valor Unit. R$</th><th>Total R$</th><th>Comprado?</th><th>Recebido?</th><th></th></tr></thead><tbody id="tb-comp"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addComp()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-lembrancinhas" class="section">
+  <div class="sec-title">🎁 Lembrancinhas</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Qtd Necessária</th><th>Qtd Comprada</th><th>Custo Unit. R$</th><th>Total R$</th><th>Finalizado?</th><th></th></tr></thead><tbody id="tb-lemb"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addLemb()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-checklist" class="section">
+  <div class="sec-title">✅ Checklist Geral</div>
+  <div class="card"><div id="ck-list"></div><div class="ck-add"><input type="text" id="ck-input" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addCk()"><button class="btn btn-primary" onclick="addCk()">➕</button></div></div>
+</div>
+<div id="sec-pagamentos" class="section">
+  <div class="sec-title">💳 Controle de Pagamentos</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Descrição</th><th>Fornecedor</th><th>Valor R$</th><th>Vencimento</th><th>Pago?</th><th>Data Pgto</th><th></th></tr></thead><tbody id="tb-pag"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addPag()">➕ Adicionar Pagamento</button></div>
+</div>
+<div id="sec-anotacoes" class="section">
+  <div class="sec-title">📝 Anotações Livres</div>
+  <div class="card"><textarea class="notes-ta" id="notes-ta" placeholder="Anote ideias, observações, lembretes..."></textarea><div style="margin-top:10px;display:flex;align-items:center;gap:12px"><button class="btn btn-primary" onclick="saveNotes()">💾 Salvar</button><span id="notes-ok" style="color:var(--success);font-weight:700;display:none">✅ Salvo!</span></div></div>
+</div>
+</div>
+
+<script>
+// ── CONFIG GIST ───────────────────────────────────
+var GIST_ID = 'd74f9f6cfa69b46fb4f2aff00bdaf7ab';
+var GIST_TOKEN = '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';
+var GIST_FILE = 'festa_duda.json';
+var GIST_API = 'https://api.github.com/gists/' + GIST_ID;
+
+var DB = null;
+var saveTimer = null;
+
+// ── SYNC ─────────────────────────────────────────
+function setSyncStatus(status, msg) {
+  var dot = document.getElementById('sync-dot');
+  var txt = document.getElementById('sync-txt');
+  dot.className = 'sync-dot' + (status ? ' ' + status : '');
+  txt.textContent = msg;
+}
+
+function loadFromGist(callback) {
+  setSyncStatus('saving', 'Carregando dados...');
+  fetch(GIST_API, {
+    headers: {
+      'Authorization': 'token ' + GIST_TOKEN,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var content = data.files[GIST_FILE].content;
+    DB = JSON.parse(content);
+    setSyncStatus('', 'Conectado – dados sincronizados ✅');
+    document.getElementById('loading-overlay').style.display = 'none';
+    if (callback) callback();
+  })
+  .catch(function(e) {
+    setSyncStatus('error', 'Erro ao conectar – verifique a internet');
+    document.getElementById('loading-overlay').style.display = 'none';
+  });
+}
+
+function saveToGist() {
+  if (!DB) return;
+  setSyncStatus('saving', 'Salvando...');
+  var body = {};
+  body.files = {};
+  body.files[GIST_FILE] = { content: JSON.stringify(DB, null, 2) };
+  fetch(GIST_API, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': 'token ' + GIST_TOKEN,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function() {
+    setSyncStatus('', 'Salvo em ' + new Date().toLocaleTimeString('pt-BR') + ' ✅');
+  })
+  .catch(function() {
+    setSyncStatus('error', 'Erro ao salvar – tente novamente');
+  });
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToGist, 1200);
+}
+
+// ── NAV ──────────────────────────────────────────
+document.querySelectorAll('.nav-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var sec = this.getAttribute('data-sec');
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('sec-' + sec).classList.add('active');
+    this.classList.add('active');
+    var renders = {dashboard:renderDash,orcamento:renderOrc,convidados:renderConv,fornecedores:renderForn,compras:renderComp,lembrancinhas:renderLemb,checklist:renderCk,pagamentos:renderPag,anotacoes:loadNotes};
+    if (renders[sec]) renders[sec]();
+  });
+});
+
+// ── COUNTDOWN ────────────────────────────────────
+function updateCd() {
+  var festa = new Date('2026-07-09T16:00:00');
+  var diff = festa - new Date();
+  if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div style="font-size:1.4rem">🎉 É HOJE!</div>'; return; }
+  var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+  document.getElementById('countdown').innerHTML =
+    cu(d,'Dias')+cu(pad(h),'Horas')+cu(pad(m),'Min')+cu(pad(s),'Seg');
+}
+function cu(n,l){return '<div class="cu"><div class="cu-num">'+n+'</div><div class="cu-lbl">'+l+'</div></div>';}
+function pad(n){return String(n).padStart(2,'0');}
+setInterval(updateCd,1000); updateCd();
+
+// ── DASHBOARD ────────────────────────────────────
+function renderDash() {
+  if (!DB) return;
+  var d = DB;
+  var totalConv=d.conv.reduce(function(s,c){return s+Number(c.qtd);},0);
+  var confCount=d.conv.filter(function(c){return c.conf==='sim';}).length;
+  var totalPrev=d.orc.reduce(function(s,o){return s+Number(o.prev);},0);
+  var totalPago=d.orc.reduce(function(s,o){return s+Number(o.pago);},0);
+  var ckDone=d.ck.filter(function(c){return c.done;}).length;
+  var compDone=d.comp.filter(function(c){return c.comprado;}).length;
+  document.getElementById('dash-stats').innerHTML =
+    st('👥',totalConv,'Convidados')+st('✅',confCount,'Confirmados')+
+    st('💰','R$'+Math.round(totalPrev),'Orçamento Previsto')+st('💸','R$'+Math.round(totalPago),'Já Pago')+
+    st('📋',ckDone+'/'+d.ck.length,'Tarefas')+st('🛒',compDone+'/'+d.comp.length,'Compras');
+  var pc=d.ck.length?Math.round(ckDone/d.ck.length*100):0;
+  var pv=totalConv?Math.round(confCount/totalConv*100):0;
+  var pp=totalPrev?Math.round(totalPago/totalPrev*100):0;
+  document.getElementById('dash-prog').innerHTML='<div class="card-title">📊 Progresso Geral</div>'+pg('✅ Checklist',pc)+pg('👥 Confirmações',pv)+pg('💳 Pagamentos',pp);
+  var pends=d.ck.filter(function(c){return !c.done;}).slice(0,6);
+  var html='<div class="card-title">⏳ Próximas Pendências</div>';
+  if(!pends.length){html+='<div style="color:var(--success);font-weight:700">🎉 Tudo em dia!</div>';}
+  else{pends.forEach(function(p){html+='<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:.83rem">⭕ '+esc(p.txt)+'</div>';});}
+  document.getElementById('dash-pend').innerHTML=html;
+}
+function st(icon,val,lbl){return '<div class="stat"><div class="stat-icon">'+icon+'</div><div class="stat-val">'+val+'</div><div class="stat-lbl">'+lbl+'</div></div>';}
+function pg(lbl,pct){return '<div class="prog-row"><div class="prog-head"><span>'+lbl+'</span><span>'+pct+'%</span></div><div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div></div>';}
+
+// ── ORÇAMENTO ────────────────────────────────────
+function renderOrc() {
+  if(!DB)return; var tp=0,tpg=0;
+  var rows=DB.orc.map(function(o){
+    tp+=Number(o.prev)||0; tpg+=Number(o.pago)||0;
+    var sal=Math.max(0,(Number(o.prev)||0)-(Number(o.pago)||0));
+    return '<tr><td><input type="text" value="'+esc(o.item)+'" onchange="updOrc('+o.id+',\'item\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(o.cat)+'" onchange="updOrc('+o.id+',\'cat\',this.value)" style="width:100px"></td>'+
+      '<td><input type="number" value="'+o.prev+'" onchange="updOrc('+o.id+',\'prev\',this.value)" style="width:80px"></td>'+
+      '<td><input type="number" value="'+o.pago+'" onchange="updOrc('+o.id+',\'pago\',this.value)" style="width:80px"></td>'+
+      '<td><span class="chip '+(sal>0?'ch-y':'ch-g')+'">R$ '+sal.toFixed(2)+'</span></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(o.ok?'checked':'')+' onchange="updOrc('+o.id+',\'ok\',this.checked)"></td>'+
+      '<td><input type="text" value="'+esc(o.obs)+'" onchange="updOrc('+o.id+',\'obs\',this.value)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delOrc('+o.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-orc').innerHTML=rows||emptyRow(8);
+  document.getElementById('t-prev').textContent='R$ '+tp.toFixed(2);
+  document.getElementById('t-pago').textContent='R$ '+tpg.toFixed(2);
+  document.getElementById('t-pend').textContent='R$ '+(tp-tpg).toFixed(2);
+}
+function updOrc(id,f,v){var o=DB.orc.find(function(x){return x.id===id;});if(!o)return;if(f==='prev'||f==='pago')o[f]=parseFloat(v)||0;else o[f]=v;scheduleSave();renderOrc();}
+function delOrc(id){DB.orc=DB.orc.filter(function(x){return x.id!==id;});scheduleSave();renderOrc();}
+function addOrc(){DB.orc.push({id:DB.nid.orc++,item:'Novo item',cat:'',prev:0,pago:0,ok:false,obs:''});scheduleSave();renderOrc();}
+
+// ── CONVIDADOS ───────────────────────────────────
+function renderConv() {
+  if(!DB)return; var na=0,nc=0,nconf=0,i=0;
+  var rows=DB.conv.map(function(c){
+    i++; na+=(c.tipo==='adulto'?Number(c.qtd):0); nc+=(c.tipo==='crianca'?Number(c.qtd):0); nconf+=(c.conf==='sim'?Number(c.qtd):0);
+    var sel=function(v){return '<option value="'+v+'" '+(c.conf===v?'selected':'')+'>'+({'sim':'✅ Sim','nao':'❌ Não','incerto':'❓ Incerto'}[v])+'</option>';};
+    return '<tr><td style="font-weight:700;color:var(--soft);width:32px">'+i+'</td>'+
+      '<td><input type="text" value="'+esc(c.nome)+'" onchange="updConv('+c.id+',\'nome\',this.value)"></td>'+
+      '<td><select onchange="updConv('+c.id+',\'tipo\',this.value)"><option value="adulto" '+(c.tipo==='adulto'?'selected':'')+'>Adulto</option><option value="crianca" '+(c.tipo==='crianca'?'selected':'')+'>Criança</option><option value="adolescente" '+(c.tipo==='adolescente'?'selected':'')+'>Adolescente</option></select></td>'+
+      '<td><input type="text" value="'+esc(c.grupo)+'" onchange="updConv('+c.id+',\'grupo\',this.value)" style="width:90px"></td>'+
+      '<td><input type="number" value="'+c.qtd+'" onchange="updConv('+c.id+',\'qtd\',this.value)" style="width:50px"></td>'+
+      '<td><select onchange="updConv('+c.id+',\'conf\',this.value)">'+sel('sim')+sel('nao')+sel('incerto')+'</select></td>'+
+      '<td><input type="text" value="'+esc(c.obs)+'" onchange="updConv('+c.id+',\'obs\',this.value)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delConv('+c.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-conv').innerHTML=rows||emptyRow(8);
+  document.getElementById('t-adultos').textContent=na;
+  document.getElementById('t-criancas').textContent=nc;
+  document.getElementById('t-conf').textContent=nconf;
+}
+function updConv(id,f,v){var o=DB.conv.find(function(x){return x.id===id;});if(!o)return;if(f==='qtd')o[f]=parseInt(v)||1;else o[f]=v;scheduleSave();renderConv();}
+function delConv(id){DB.conv=DB.conv.filter(function(x){return x.id!==id;});scheduleSave();renderConv();}
+function addConv(){DB.conv.push({id:DB.nid.conv++,nome:'Novo Convidado',tipo:'adulto',grupo:'',qtd:1,conf:'incerto',obs:''});scheduleSave();renderConv();}
+
+// ── FORNECEDORES ─────────────────────────────────
+function renderForn() {
+  if(!DB)return;
+  var rows=DB.forn.map(function(f){
+    var sal=Math.max(0,(Number(f.contrat)||0)-(Number(f.pago)||0));
+    return '<tr><td><input type="text" value="'+esc(f.cat)+'" onchange="updForn('+f.id+',\'cat\',this.value)" style="width:90px"></td>'+
+      '<td><input type="text" value="'+esc(f.nome)+'" onchange="updForn('+f.id+',\'nome\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(f.contato)+'" onchange="updForn('+f.id+',\'contato\',this.value)" placeholder="📱" style="width:110px"></td>'+
+      '<td><input type="number" value="'+f.contrat+'" onchange="updForn('+f.id+',\'contrat\',this.value)" style="width:80px"></td>'+
+      '<td><input type="number" value="'+f.pago+'" onchange="updForn('+f.id+',\'pago\',this.value)" style="width:80px"></td>'+
+      '<td><span class="chip '+(sal>0?'ch-y':'ch-g')+'">R$ '+sal.toFixed(2)+'</span></td>'+
+      '<td><input type="date" value="'+f.venc+'" onchange="updForn('+f.id+',\'venc\',this.value)"></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(f.contrato?'checked':'')+' onchange="updForn('+f.id+',\'contrato\',this.checked)"></td>'+
+      '<td><select onchange="updForn('+f.id+',\'status\',this.value)"><option value="confirmado" '+(f.status==='confirmado'?'selected':'')+'>✅ Confirmado</option><option value="pendente" '+(f.status==='pendente'?'selected':'')+'>⏳ Pendente</option><option value="cancelado" '+(f.status==='cancelado'?'selected':'')+'>❌ Cancelado</option></select></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delForn('+f.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-forn').innerHTML=rows||emptyRow(10);
+}
+function updForn(id,f,v){var o=DB.forn.find(function(x){return x.id===id;});if(!o)return;if(f==='contrat'||f==='pago')o[f]=parseFloat(v)||0;else o[f]=v;scheduleSave();renderForn();}
+function delForn(id){DB.forn=DB.forn.filter(function(x){return x.id!==id;});scheduleSave();renderForn();}
+function addForn(){DB.forn.push({id:DB.nid.forn++,cat:'',nome:'Novo Fornecedor',contato:'',contrat:0,pago:0,venc:'',contrato:false,status:'pendente'});scheduleSave();renderForn();}
+
+// ── COMPRAS ──────────────────────────────────────
+function renderComp() {
+  if(!DB)return;
+  var rows=DB.comp.map(function(c){
+    var tot=(Number(c.qtd)||1)*(Number(c.val)||0);
+    var lnk=c.link?'<a href="'+c.link+'" target="_blank" class="lnk">🛍 Ver</a>':'–';
+    return '<tr '+(c.comprado&&c.recebido?'style="opacity:.6"':'')+'>'+
+      '<td><input type="text" value="'+esc(c.item)+'" onchange="updComp('+c.id+',\'item\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(c.cat)+'" onchange="updComp('+c.id+',\'cat\',this.value)" style="width:90px"></td>'+
+      '<td>'+lnk+'</td>'+
+      '<td><input type="number" value="'+c.qtd+'" onchange="updComp('+c.id+',\'qtd\',this.value)" style="width:50px"></td>'+
+      '<td><input type="number" value="'+c.val+'" onchange="updComp('+c.id+',\'val\',this.value)" style="width:75px" placeholder="0,00"></td>'+
+      '<td><strong>R$ '+tot.toFixed(2)+'</strong></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(c.comprado?'checked':'')+' onchange="updComp('+c.id+',\'comprado\',this.checked)"></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(c.recebido?'checked':'')+' onchange="updComp('+c.id+',\'recebido\',this.checked)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delComp('+c.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-comp').innerHTML=rows||emptyRow(9);
+}
+function updComp(id,f,v){var o=DB.comp.find(function(x){return x.id===id;});if(!o)return;if(f==='qtd'||f==='val')o[f]=parseFloat(v)||0;else o[f]=v;scheduleSave();renderComp();}
+function delComp(id){DB.comp=DB.comp.filter(function(x){return x.id!==id;});scheduleSave();renderComp();}
+function addComp(){DB.comp.push({id:DB.nid.comp++,item:'Novo item',cat:'',link:'',qtd:1,val:0,comprado:false,recebido:false});scheduleSave();renderComp();}
+
+// ── LEMBRANCINHAS ────────────────────────────────
+function renderLemb() {
+  if(!DB)return;
+  var rows=DB.lemb.map(function(l){
+    var tot=(Number(l.qn)||0)*(Number(l.cu)||0);
+    return '<tr><td><input type="text" value="'+esc(l.item)+'" onchange="updLemb('+l.id+',\'item\',this.value)"></td>'+
+      '<td><input type="number" value="'+l.qn+'" onchange="updLemb('+l.id+',\'qn\',this.value)" style="width:65px"></td>'+
+      '<td><input type="number" value="'+l.qc+'" onchange="updLemb('+l.id+',\'qc\',this.value)" style="width:65px"></td>'+
+      '<td><input type="number" value="'+l.cu+'" onchange="updLemb('+l.id+',\'cu\',this.value)" style="width:70px"></td>'+
+      '<td><strong>R$ '+tot.toFixed(2)+'</strong></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(l.ok?'checked':'')+' onchange="updLemb('+l.id+',\'ok\',this.checked)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delLemb('+l.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-lemb').innerHTML=rows||emptyRow(7);
+}
+function updLemb(id,f,v){var o=DB.lemb.find(function(x){return x.id===id;});if(!o)return;if(['qn','qc','cu'].indexOf(f)>=0)o[f]=parseFloat(v)||0;else o[f]=v;scheduleSave();renderLemb();}
+function delLemb(id){DB.lemb=DB.lemb.filter(function(x){return x.id!==id;});scheduleSave();renderLemb();}
+function addLemb(){DB.lemb.push({id:DB.nid.lemb++,item:'Novo item',qn:1,qc:0,cu:0,ok:false});scheduleSave();renderLemb();}
+
+// ── CHECKLIST ────────────────────────────────────
+function renderCk() {
+  if(!DB)return;
+  var html=DB.ck.map(function(c){
+    return '<div class="ck-item'+(c.done?' done':'')+'" id="ck-'+c.id+'">'+
+      '<input type="checkbox" '+(c.done?'checked':'')+' onchange="togCk('+c.id+',this.checked)">'+
+      '<span class="ck-txt" contenteditable="true" onblur="editCk('+c.id+',this.textContent)">'+esc(c.txt)+'</span>'+
+      '<button class="btn btn-danger btn-sm" onclick="delCk('+c.id+')">🗑</button></div>';
+  }).join('');
+  document.getElementById('ck-list').innerHTML=html||'<div style="color:var(--soft);padding:12px">Adicione uma tarefa abaixo!</div>';
+}
+function togCk(id,v){var o=DB.ck.find(function(x){return x.id===id;});if(o)o.done=v;scheduleSave();renderCk();}
+function editCk(id,v){var o=DB.ck.find(function(x){return x.id===id;});if(o)o.txt=v.trim();scheduleSave();}
+function delCk(id){DB.ck=DB.ck.filter(function(x){return x.id!==id;});scheduleSave();renderCk();}
+function addCk(){var inp=document.getElementById('ck-input');var txt=inp.value.trim();if(!txt)return;DB.ck.push({id:DB.nid.ck++,txt:txt,done:false});inp.value='';scheduleSave();renderCk();}
+
+// ── PAGAMENTOS ───────────────────────────────────
+function renderPag() {
+  if(!DB)return;
+  var hoje=new Date();
+  var rows=DB.pag.map(function(p){
+    var venc=p.venc?new Date(p.venc):null;
+    var atrasado=venc&&!p.pago&&venc<hoje;
+    var prox=venc&&!p.pago&&(venc-hoje)<7*86400000&&(venc-hoje)>=0;
+    return '<tr class="'+(atrasado?'row-danger':prox?'row-alert':'')+'">'+
+      '<td><input type="text" value="'+esc(p.desc)+'" onchange="updPag('+p.id+',\'desc\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(p.forn)+'" onchange="updPag('+p.id+',\'forn\',this.value)" style="width:100px"></td>'+
+      '<td><input type="number" value="'+p.val+'" onchange="updPag('+p.id+',\'val\',this.value)" style="width:80px"></td>'+
+      '<td><input type="date" value="'+p.venc+'" onchange="updPag('+p.id+',\'venc\',this.value)"></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(p.pago?'checked':'')+' onchange="updPag('+p.id+',\'pago\',this.checked)"></td>'+
+      '<td><input type="date" value="'+p.dpag+'" onchange="updPag('+p.id+',\'dpag\',this.value)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delPag('+p.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-pag').innerHTML=rows||emptyRow(7,'Nenhum pagamento cadastrado.');
+}
+function updPag(id,f,v){var o=DB.pag.find(function(x){return x.id===id;});if(!o)return;if(f==='val')o[f]=parseFloat(v)||0;else o[f]=v;scheduleSave();renderPag();}
+function delPag(id){DB.pag=DB.pag.filter(function(x){return x.id!==id;});scheduleSave();renderPag();}
+function addPag(){DB.pag.push({id:DB.nid.pag++,desc:'',forn:'',val:0,venc:'',pago:false,dpag:''});scheduleSave();renderPag();}
+
+// ── ANOTAÇÕES ────────────────────────────────────
+function loadNotes(){if(!DB)return;document.getElementById('notes-ta').value=DB.notes||'';}
+function saveNotes(){if(!DB)return;DB.notes=document.getElementById('notes-ta').value;scheduleSave();var ok=document.getElementById('notes-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';},2000);}
+
+// ── UTILS ────────────────────────────────────────
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function emptyRow(cols,msg){return '<tr class="empty-row"><td colspan="'+cols+'">'+(msg||'Nenhum item cadastrado.')+'</td></tr>';}
+
+// ── INIT ─────────────────────────────────────────
+loadFromGist(function() { renderDash(); });
+</script>
+</body>
+</html>
