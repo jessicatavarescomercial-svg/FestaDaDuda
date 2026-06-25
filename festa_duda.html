@@ -128,6 +128,7 @@ tr.row-danger td{background:#FEE2E2!important}
   <span id="sync-txt">Conectado – dados sincronizados em tempo real</span>
 </div>
 
+<div style="text-align:center;padding:5px;background:rgba(168,85,247,.12);font-size:.78rem;font-weight:700;color:var(--purple)"><span id="sync-status">⏳ Carregando...</span></div>
 <div class="nav-wrap">
   <div class="nav">
     <button class="nav-btn active" data-sec="dashboard">🏠 Início</button>
@@ -336,14 +337,59 @@ function getD(){
   };
 }
 
-function load(){
-  try{
-    var s=localStorage.getItem(KEY);
-    if(s) return JSON.parse(s);
-    var d=getD(); save(d); return d;
-  }catch(e){return getD();}
+var SUPA_URL='https://uostzzhcazszmxxvjdpo.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvc3R6emhjYXpzem14eHZqZHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjIxMzIsImV4cCI6MjA5NzkzODEzMn0.cKWWOqu6PnscwxJf9Xmlx2uA4d3Z9Tsog4S5r_rj_ps';
+var DB=null;
+var saveTimer=null;
+
+function load(){ return DB || getD(); }
+
+function save(d){
+  DB=d;
+  clearTimeout(saveTimer);
+  document.getElementById('sync-status').textContent='💾 Salvando...';
+  saveTimer=setTimeout(function(){
+    fetch(SUPA_URL+'/rest/v1/festa_duda?id=eq.dados',{
+      method:'PATCH',
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({dados:DB,atualizado_em:new Date().toISOString()})
+    }).then(function(){
+      saveTimer=null;
+      document.getElementById('sync-status').textContent='✅ Salvo em '+new Date().toLocaleTimeString('pt-BR');
+    }).catch(function(){
+      saveTimer=null;
+      document.getElementById('sync-status').textContent='❌ Erro ao salvar';
+    });
+  },800);
 }
-function save(d){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
+
+function initDB(silent){
+  if(!silent) document.getElementById('sync-status').textContent='⏳ Carregando...';
+  fetch(SUPA_URL+'/rest/v1/festa_duda?id=eq.dados&select=dados&t='+Date.now(),{
+    cache:'no-store',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Cache-Control':'no-cache'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(rows){
+    DB = (rows&&rows.length>0) ? rows[0].dados : getD();
+    var now = new Date().toLocaleTimeString('pt-BR');
+    document.getElementById('sync-status').textContent='✅ Sincronizado às '+now;
+    var sec = document.querySelector('.section.active');
+    if(sec){
+      var id = sec.id.replace('sec-','');
+      var renders = {dashboard:renderDash,orcamento:renderOrc,convidados:renderConv,fornecedores:renderForn,compras:renderComp,lembrancinhas:renderLemb,checklist:renderCk,pagamentos:renderPag,anotacoes:loadNotes};
+      if(renders[id]) renders[id]();
+    }
+  })
+  .catch(function(){
+    document.getElementById('sync-status').textContent='⚠️ Sem conexão';
+  });
+}
+
+// Auto-refresh a cada 20 segundos, só se não tem save pendente
+setInterval(function(){
+  if(!saveTimer) initDB(true);
+}, 20000);
 
 document.querySelectorAll('.nav-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
@@ -499,7 +545,7 @@ function saveNotes(){var d=load();d.notes=document.getElementById('notes-ta').va
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function emptyRow(cols,msg){return '<tr class="empty-row"><td colspan="'+cols+'">'+(msg||'Nenhum item cadastrado.')+'</td></tr>';}
 
-window.addEventListener('DOMContentLoaded',function(){renderDash();});
+window.addEventListener('DOMContentLoaded',function(){initDB(false);});
 </script>
 </body>
 </html>
