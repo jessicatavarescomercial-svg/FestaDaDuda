@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Festa da Duda – Stitch encontra K-Pop</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap');
+:root {
+  --pink:#FF6FB8; --pink-l:#FFD6EC; --pink-p:#FFF0F8;
+  --purple:#A855F7; --purple-l:#E9D5FF; --purple-p:#F5F0FF;
+  --blue:#60B8FF; --blue-l:#DBEAFE;
+  --text:#3B2059; --soft:#8B6FAA; --border:#EDD9F7;
+  --white:#fff; --success:#22C55E; --warn:#F59E0B; --danger:#EF4444;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#FFF0F8 0%,#F3E8FF 50%,#EFF6FF 100%);color:var(--text);min-height:100vh}
+.hero{background:linear-gradient(135deg,#FF6FB8,#A855F7 50%,#60B8FF);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'⭐ 🎵 💜 🌟 🎶 💙 ⭐ 🎵 💜 🌟 🎶 💙 ⭐ 🎵 💜 🌟 🎶 💙';position:absolute;top:6px;left:0;right:0;font-size:16px;opacity:.3;white-space:nowrap;animation:ticker 24s linear infinite}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero-title{font-family:'Pacifico',cursive;font-size:clamp(1.8rem,5vw,3rem);color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,.15);line-height:1.1}
+.hero-sub{color:rgba(255,255,255,.92);font-size:1rem;font-weight:800;margin-top:5px;letter-spacing:1px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.badge{background:rgba(255,255,255,.22);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:5px 14px;font-size:.82rem;font-weight:700}
+
+
+50%{opacity:.3}}
+
+
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.93);backdrop-filter:blur(12px);border-bottom:2px solid var(--border)}
+.nav{display:flex;overflow-x:auto;gap:2px;scrollbar-width:none;max-width:1100px;margin:0 auto;padding:0 8px}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:none;cursor:pointer;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;color:var(--soft);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{color:var(--purple);border-bottom-color:var(--pink)}
+.container{max-width:1100px;margin:0 auto;padding:22px 14px 60px}
+.section{display:none;animation:fadeUp .3s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-title{font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--purple);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.card{background:#fff;border-radius:18px;border:1.5px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:0 4px 18px rgba(168,85,247,.07)}
+.card-title{font-weight:800;color:var(--purple);margin-bottom:12px;font-size:.95rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border-radius:16px;padding:16px;text-align:center;border:1.5px solid var(--border);box-shadow:0 4px 14px rgba(168,85,247,.07)}
+.stat-icon{font-size:1.8rem;margin-bottom:4px}
+.stat-val{font-size:1.5rem;font-weight:900;color:var(--purple);line-height:1}
+.stat-lbl{font-size:.74rem;color:var(--soft);font-weight:700;margin-top:3px}
+.prog-row{margin-bottom:10px}
+.prog-head{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;margin-bottom:4px}
+.prog-bar{height:9px;border-radius:999px;background:var(--border)}
+.prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .5s}
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:480px){.totals{grid-template-columns:1fr}}
+.tot{border-radius:14px;padding:13px;text-align:center}
+.tot .v{font-size:1.2rem;font-weight:900}
+.tot .l{font-size:.72rem;font-weight:700;margin-top:2px}
+.tot-a{background:var(--blue-l);color:#1e40af}
+.tot-b{background:#DCFCE7;color:#15803d}
+.tot-c{background:#FEF3C7;color:#92400e}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:800;padding:9px 11px;text-align:left;white-space:nowrap}
+th:first-child{border-radius:10px 0 0 0}th:last-child{border-radius:0 10px 0 0}
+td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--pink-p)}
+tr:hover td{background:var(--purple-l)}
+.empty-row td{text-align:center;color:var(--soft);padding:20px;font-style:italic}
+input[type=text],input[type=number],input[type=date],select,textarea{font-family:'Nunito',sans-serif;font-size:.82rem;border:1.5px solid var(--border);border-radius:8px;padding:5px 8px;width:100%;background:#fff;color:var(--text);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:var(--purple);flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-radius:999px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.83rem;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;box-shadow:0 4px 12px rgba(168,85,247,.28)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(168,85,247,.38)}
+.btn-danger{background:#FEE2E2;color:var(--danger)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+.btn-add{margin-top:12px}
+.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.73rem;font-weight:700;white-space:nowrap}
+.ch-g{background:#DCFCE7;color:#15803d}.ch-r{background:#FEE2E2;color:#991b1b}
+.ch-y{background:#FEF3C7;color:#92400e}.ch-b{background:var(--blue-l);color:#1e40af}
+.ck-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ck-item:last-child{border-bottom:none}
+.ck-item.done .ck-txt{text-decoration:line-through;color:var(--soft)}
+.ck-txt{flex:1;font-size:.9rem}
+.ck-add{display:flex;gap:8px;margin-top:12px}
+.ck-add input{flex:1}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.info-grid{grid-template-columns:1fr}}
+.info-block label{display:block;font-size:.72rem;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.info-block .iv{font-size:.95rem;font-weight:700}
+.cd-wrap{background:linear-gradient(135deg,var(--purple),var(--pink));border-radius:18px;padding:18px;text-align:center;color:#fff;margin-bottom:18px}
+.cd-lbl{font-size:1rem;font-weight:800;margin-bottom:10px}
+.cd-units{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cu-num{font-size:2.2rem;font-weight:900;line-height:1}
+.cu-lbl{font-size:.68rem;font-weight:700;opacity:.85}
+a.lnk{color:var(--purple);font-weight:700;text-decoration:none;font-size:.8rem}
+a.lnk:hover{text-decoration:underline}
+.notes-ta{width:100%;min-height:160px;resize:vertical;border-radius:14px;padding:13px;font-size:.92rem;line-height:1.6}
+.dash-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.dash-two{grid-template-columns:1fr}}
+.tag-a{background:#EDE9FE;color:#5b21b6;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+.tag-c{background:#FCE7F3;color:#9d174d;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+.tag-t{background:var(--blue-l);color:#1e40af;border-radius:999px;padding:1px 8px;font-size:.72rem;font-weight:700}
+tr.row-alert td{background:#FEF3C7!important}
+tr.row-danger td{background:#FEE2E2!important}
+
+
+}
+
+</style>
+</head>
+<body>
+
+  <div class="loading-txt">Carregando festa da Duda... 🎉</div>
+</div>
+
+<div class="hero">
+  <div class="hero-title">🎉 Festa da Duda</div>
+  <div class="hero-sub">✨ Stitch encontra K-Pop ✨</div>
+  <div class="hero-badges">
+    <span class="badge">📅 09/07/2026 às 16h</span>
+    <span class="badge">📍 Casa da Duda</span>
+    <span class="badge">🎂 4 aninhos</span>
+    <span class="badge">🏠 Rua Anis Chakur, 91</span>
+  </div>
+</div>
+
+  <span id="sync-txt">Conectado – dados sincronizados em tempo real</span>
+</div>
+
+<div style="text-align:center;padding:5px;background:rgba(168,85,247,.12);font-size:.78rem;font-weight:700;color:var(--purple)"><span id="sync-status">⏳ Carregando...</span></div>
+<div class="nav-wrap">
+  <div class="nav">
+    <button class="nav-btn active" data-sec="dashboard">🏠 Início</button>
+    <button class="nav-btn" data-sec="info">📋 Informações</button>
+    <button class="nav-btn" data-sec="orcamento">💰 Orçamento</button>
+    <button class="nav-btn" data-sec="convidados">👥 Convidados</button>
+    <button class="nav-btn" data-sec="fornecedores">🤝 Fornecedores</button>
+    <button class="nav-btn" data-sec="compras">🛒 Compras</button>
+    <button class="nav-btn" data-sec="lembrancinhas">🎁 Lembrancinhas</button>
+    <button class="nav-btn" data-sec="checklist">✅ Checklist</button>
+    <button class="nav-btn" data-sec="pagamentos">💳 Pagamentos</button>
+    <button class="nav-btn" data-sec="anotacoes">📝 Anotações</button>
+  </div>
+</div>
+
+<div class="container">
+<div id="sec-dashboard" class="section active">
+  <div class="cd-wrap"><div class="cd-lbl">⏳ Contagem Regressiva para a Festa!</div><div class="cd-units" id="countdown"></div></div>
+  <div class="stats-grid" id="dash-stats"></div>
+  <div class="dash-two"><div class="card" id="dash-prog"></div><div class="card" id="dash-pend"></div></div>
+</div>
+<div id="sec-info" class="section">
+  <div class="sec-title">📋 Informações Gerais</div>
+  <div class="card">
+    <div class="info-grid">
+      <div class="info-block"><label>Nome da Festa</label><div class="iv">Festa da Duda 🎉</div></div>
+      <div class="info-block"><label>Tema</label><div class="iv">Stitch encontra K-Pop 💙🎵</div></div>
+      <div class="info-block"><label>Data</label><div class="iv">09 de Julho de 2026 – Quinta-feira (Feriado)</div></div>
+      <div class="info-block"><label>Horário</label><div class="iv">16h00</div></div>
+      <div class="info-block"><label>Local</label><div class="iv">Casa da Duda</div></div>
+      <div class="info-block"><label>Endereço</label><div class="iv">Rua Anis Chakur, 91 – Jardim Alvorada</div></div>
+      <div class="info-block"><label>Aniversariante</label><div class="iv">Duda – 4 anos 🎂</div></div>
+      <div class="info-block"><label>Estimativa de Convidados</label><div class="iv">~45 pessoas</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎨 Paleta de Cores do Tema</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#FF6FB8;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Rosa</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#A855F7;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Lilás</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#60B8FF;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Azul</div></div>
+      <div style="text-align:center"><div style="width:52px;height:52px;border-radius:12px;background:#FFD6EC;margin-bottom:4px"></div><div style="font-size:.7rem;font-weight:700">Rosa Claro</div></div>
+    </div>
+  </div>
+</div>
+<div id="sec-orcamento" class="section">
+  <div class="sec-title">💰 Orçamento</div>
+  <div class="totals">
+    <div class="tot tot-a"><div class="v" id="t-prev">R$ 0</div><div class="l">💸 Previsto</div></div>
+    <div class="tot tot-b"><div class="v" id="t-pago">R$ 0</div><div class="l">✅ Pago</div></div>
+    <div class="tot tot-c"><div class="v" id="t-pend">R$ 0</div><div class="l">⏳ Pendente</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Categoria</th><th>Previsto R$</th><th>Pago R$</th><th>Saldo</th><th>Pago?</th><th>Obs</th><th></th></tr></thead><tbody id="tb-orc"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addOrc()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-convidados" class="section">
+  <div class="sec-title">👥 Lista de Convidados</div>
+  <div class="totals">
+    <div class="tot tot-a"><div class="v" id="t-adultos">0</div><div class="l">👨‍👩 Adultos</div></div>
+    <div class="tot tot-b"><div class="v" id="t-criancas">0</div><div class="l">👧 Crianças</div></div>
+    <div class="tot tot-c"><div class="v" id="t-conf">0</div><div class="l">✅ Confirmados</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Nome</th><th>Tipo</th><th>Família/Grupo</th><th>Qtd</th><th>Confirmado?</th><th>Obs</th><th></th></tr></thead><tbody id="tb-conv"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addConv()">➕ Adicionar Convidado</button></div>
+</div>
+<div id="sec-fornecedores" class="section">
+  <div class="sec-title">🤝 Fornecedores</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Categoria</th><th>Fornecedor</th><th>Contato</th><th>Contratado R$</th><th>Pago R$</th><th>Saldo</th><th>Vencimento</th><th>Contrato?</th><th>Status</th><th></th></tr></thead><tbody id="tb-forn"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addForn()">➕ Adicionar Fornecedor</button></div>
+</div>
+<div id="sec-compras" class="section">
+  <div class="sec-title">🛒 Lista de Compras</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Categoria</th><th>Link</th><th>Qtd</th><th>Valor Unit. R$</th><th>Total R$</th><th>Comprado?</th><th>Recebido?</th><th></th></tr></thead><tbody id="tb-comp"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addComp()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-lembrancinhas" class="section">
+  <div class="sec-title">🎁 Lembrancinhas</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Qtd Necessária</th><th>Qtd Comprada</th><th>Custo Unit. R$</th><th>Total R$</th><th>Finalizado?</th><th></th></tr></thead><tbody id="tb-lemb"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addLemb()">➕ Adicionar Item</button></div>
+</div>
+<div id="sec-checklist" class="section">
+  <div class="sec-title">✅ Checklist Geral</div>
+  <div class="card"><div id="ck-list"></div><div class="ck-add"><input type="text" id="ck-input" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addCk()"><button class="btn btn-primary" onclick="addCk()">➕</button></div></div>
+</div>
+<div id="sec-pagamentos" class="section">
+  <div class="sec-title">💳 Controle de Pagamentos</div>
+  <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Descrição</th><th>Fornecedor</th><th>Valor R$</th><th>Vencimento</th><th>Pago?</th><th>Data Pgto</th><th></th></tr></thead><tbody id="tb-pag"></tbody></table></div><button class="btn btn-primary btn-add" onclick="addPag()">➕ Adicionar Pagamento</button></div>
+</div>
+<div id="sec-anotacoes" class="section">
+  <div class="sec-title">📝 Anotações Livres</div>
+  <div class="card"><textarea class="notes-ta" id="notes-ta" placeholder="Anote ideias, observações, lembretes..."></textarea><div style="margin-top:10px;display:flex;align-items:center;gap:12px"><button class="btn btn-primary" onclick="saveNotes()">💾 Salvar</button><span id="notes-ok" style="color:var(--success);font-weight:700;display:none">✅ Salvo!</span></div></div>
+</div>
+</div>
+
+
+<script>
+var KEY='festa_duda_v5';
+
+function getD(){
+  return {
+    orc:[
+      {id:1,item:'Recreador',cat:'Entretenimento',prev:420,pago:0,ok:false,obs:'2 horas'},
+      {id:2,item:'Bolo',cat:'Alimentação',prev:360,pago:0,ok:false,obs:'4kg – Stitch K-Pop'},
+      {id:3,item:'Docinhos',cat:'Alimentação',prev:220,pago:0,ok:false,obs:'110 unid / 100 docinhos'},
+      {id:4,item:'Cupcakes',cat:'Alimentação',prev:100,pago:0,ok:false,obs:'30 unid'},
+      {id:5,item:'Fantasia K-Pop',cat:'Vestuário',prev:90,pago:0,ok:false,obs:'Duda'},
+      {id:6,item:'300 Salgados',cat:'Alimentação',prev:210,pago:0,ok:false,obs:''},
+      {id:7,item:'Pão de Metro',cat:'Alimentação',prev:269.7,pago:0,ok:false,obs:''},
+      {id:8,item:'Patê de Atum',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:9,item:'Patê de Alho',cat:'Alimentação',prev:40,pago:0,ok:false,obs:''},
+      {id:10,item:'Gelatina',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:11,item:'Torrada',cat:'Alimentação',prev:50,pago:0,ok:false,obs:''},
+      {id:12,item:'Pão com Salsicha',cat:'Alimentação',prev:150,pago:0,ok:false,obs:''},
+      {id:13,item:'Suco',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'6 caixas'},
+      {id:14,item:'Refrigerante',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'12 garrafas'},
+      {id:15,item:'Água',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'8 garrafas'},
+      {id:16,item:'Cerveja',cat:'Bebidas',prev:0,pago:0,ok:false,obs:'10 fardos'},
+      {id:17,item:'Decoração',cat:'Decoração',prev:0,pago:0,ok:false,obs:'Ver aba Compras'}
+    ],
+    conv:[
+      {id:1,nome:'Mãe da Yasmin',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:2,nome:'Pai da Yasmin',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:3,nome:'Tânia',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:4,nome:'Ana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:5,nome:'Tatsu',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:6,nome:'Natália',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:7,nome:'Cristina',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:8,nome:'Érica',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:9,nome:'Mó',tipo:'adulto',grupo:'',qtd:1,conf:'incerto',obs:'Provavelmente vai apenas um responsável'},
+      {id:10,nome:'Silas',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:11,nome:'Luana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:12,nome:'Fernando',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:13,nome:'Paulinho',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:14,nome:'Dani',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:15,nome:'Tatian Deri',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:16,nome:'Fábio',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:17,nome:'Mariana',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:18,nome:'Tainá',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:19,nome:'Má',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:20,nome:'Thaís',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:21,nome:'Rosilda',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:22,nome:'Pietra',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:23,nome:'Calvim',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:24,nome:'Larissa',tipo:'adulto',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:25,nome:'Duda',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:'🎂 Aniversariante'},
+      {id:26,nome:'Yasmin Querido',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:27,nome:'Lavínia',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:28,nome:'Maria (filha da Natália)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:29,nome:'Cauã',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:30,nome:'Isadora',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:31,nome:'Bia',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:32,nome:'Sara',tipo:'crianca',grupo:'',qtd:1,conf:'incerto',obs:'Presença incerta'},
+      {id:33,nome:'Heloísa',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:34,nome:'Maria Helena',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:35,nome:'Maju',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:36,nome:'Henry',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:37,nome:'Lara',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:38,nome:'Davi',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:39,nome:'Arthur',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:40,nome:'Maria (filha da Thaís)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:41,nome:'Maria (filha da Pietra)',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:42,nome:'Teo',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:43,nome:'Apolo',tipo:'crianca',grupo:'',qtd:1,conf:'sim',obs:''},
+      {id:44,nome:'Manu',tipo:'adolescente',grupo:'',qtd:1,conf:'sim',obs:'14 anos'}
+    ],
+    forn:[
+      {id:1,cat:'Entretenimento',nome:'Recreador',contato:'',contrat:420,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:2,cat:'Alimentação',nome:'Confeitaria (Bolo)',contato:'',contrat:360,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:3,cat:'Alimentação',nome:'Docinhos',contato:'',contrat:220,pago:0,venc:'',contrato:false,status:'pendente'},
+      {id:4,cat:'Alimentação',nome:'Cupcakes',contato:'',contrat:100,pago:0,venc:'',contrato:false,status:'pendente'}
+    ],
+    comp:[
+      {id:1,item:'Kit Slime Bolinha Stitch 12g',cat:'Lembrancinhas',link:'https://shopee.com.br/KIT-SLIME-BOLINHA-DO-STICH-12grs-KIT-FESTAS-LEMBRANCINHA-INFANTIL-GELECA-i.687929303.22293896595',qtd:1,val:0,comprado:false,recebido:false},
+      {id:2,item:'Sacolinhas Personalizadas (Kit 10-50)',cat:'Lembrancinhas',link:'https://shopee.com.br/Kit-10-a-50-Sacolinhas-Personalizadas-Qualquer-Tema-Festa-Infantil-Lembrancinhas-Anivers%C3%A1rio-Pegue-e-Monte-Ch%C3%A1-de-Beb%C3%AA-i.381657027.23199175184',qtd:1,val:0,comprado:false,recebido:false},
+      {id:3,item:'Kit 30 Massinha + 30 Bolha Sabão + 30 Cortador',cat:'Lembrancinhas',link:'https://shopee.com.br/Kit-30-Massinha-de-Modelar-30-Bolha-de-Sab%C3%A3o-30-Cortador-Forminha-Infantil-Lembrancinha-i.1233355702.22894184813',qtd:1,val:0,comprado:false,recebido:false},
+      {id:4,item:'Bandeirolas Personalizadas Stitch (6 un)',cat:'Decoração',link:'https://shopee.com.br/Bandeirolas-personalizadas-Festa-Infantil-6-Unidades-Temas-i.1224599212.22494772899',qtd:1,val:0,comprado:false,recebido:false},
+      {id:5,item:'Toalha de Mesa Rosa Bebê 140x220cm',cat:'Decoração',link:'https://shopee.com.br/Toalha-de-Mesa-Lisa-Para-Festas-Retangular-140x220cm-Rosa-Bebe-i.749241184.22397122671',qtd:1,val:0,comprado:false,recebido:false},
+      {id:6,item:'Centro de Mesa Stitch e Angel',cat:'Decoração',link:'https://shopee.com.br/Centro-de-Mesa-Stitch-e-Angel-Anivers%C3%A1rio-Infantil-Decora%C3%A7%C3%A3o-Festa-Infantil-Lembrancinha-i.692266466.22593651008',qtd:1,val:0,comprado:false,recebido:false},
+      {id:7,item:'Bandeirinha 16m com 120 Estrelinhas Rosa',cat:'Decoração',link:'https://shopee.com.br/16m-de-Bandeirinha-com-120-Estrelinhas-para-Decora%C3%A7%C3%A3o-Festa-Anivers%C3%A1rio-banner-painel-Estrelas-Rosa-i.399106530.22093555593',qtd:1,val:0,comprado:false,recebido:false},
+      {id:8,item:'Kit 102 Balões Macaron (5/10/12/18 pol)',cat:'Decoração',link:'https://shopee.com.br/Kit-102-Pe%C3%A7as-Bal%C3%B5es-5-10-12-18-Coloridos-Macaron-Para-Festas-e-Anivers%C3%A1rios-Com-Fita-i.1727488347.22699467545',qtd:1,val:0,comprado:false,recebido:false},
+      {id:9,item:'Faixa Flâmula Rosa e Azul c/ Glitter',cat:'Decoração',link:'https://shopee.com.br/Faixa-Decorativa-Especial-Estilo-Fl%C3%A2mula-Bandeirinhas-Rosa-e-Azul-com-Glitter-i.522417487.22993677471',qtd:1,val:0,comprado:false,recebido:false},
+      {id:10,item:'Kit Festa K-Pop 24 Itens',cat:'Decoração',link:'https://shopee.com.br/Kit-Festa-Guerreiras-Do-K-pop-Kit-Meninas-Do-Kpop-24-Itens-i.1077227121.51354417604',qtd:1,val:0,comprado:false,recebido:false}
+    ],
+    lemb:[
+      {id:1,item:'Kit Slime Bolinha Stitch',qn:25,qc:0,cu:0,ok:false},
+      {id:2,item:'Sacolinhas Personalizadas',qn:25,qc:0,cu:0,ok:false},
+      {id:3,item:'Massinha de Modelar',qn:25,qc:0,cu:0,ok:false},
+      {id:4,item:'Bolha de Sabão',qn:25,qc:0,cu:0,ok:false},
+      {id:5,item:'Cortador Forminha',qn:25,qc:0,cu:0,ok:false}
+    ],
+    ck:[
+      {id:1,txt:'Confirmar recreador – data, horário e valor',done:false},
+      {id:2,txt:'Fechar pedido do bolo (4kg Stitch K-Pop)',done:false},
+      {id:3,txt:'Fechar pedido docinhos e cupcakes',done:false},
+      {id:4,txt:'Comprar fantasia K-Pop para a Duda',done:false},
+      {id:5,txt:'Fazer pedidos Shopee – decoração',done:false},
+      {id:6,txt:'Fazer pedidos Shopee – lembrancinhas',done:false},
+      {id:7,txt:'Confirmar lista final de convidados',done:false},
+      {id:8,txt:'Comprar salgados e pão de metro',done:false},
+      {id:9,txt:'Comprar bebidas (suco, refri, água, cerveja)',done:false},
+      {id:10,txt:'Montar lembrancinhas nas sacolinhas',done:false},
+      {id:11,txt:'Preparar playlist K-Pop + músicas do Stitch',done:false},
+      {id:12,txt:'Montar mesa de doces no dia da festa',done:false},
+      {id:13,txt:'Preparar gelatinas',done:false},
+      {id:14,txt:'Preparar patês',done:false},
+      {id:15,txt:'Preparar cachorro quente',done:false}
+    ],
+    pag:[],
+    notes:'Local: Casa da Duda – Rua Anis Chakur, 91, Jardim Alvorada\n\nConvidados:\n  Adultos: 24\n  Crianças: 19 (+Sara = 20)\n  Adolescente: Manu (14 anos)\n  TOTAL: ~44-45 pessoas\n',
+    nid:{orc:18,conv:45,forn:5,comp:11,lemb:6,ck:16,pag:1}
+  };
+}
+
+var SUPA_URL='https://uostzzhcazszmxxvjdpo.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvc3R6emhjYXpzem14eHZqZHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjIxMzIsImV4cCI6MjA5NzkzODEzMn0.cKWWOqu6PnscwxJf9Xmlx2uA4d3Z9Tsog4S5r_rj_ps';
+var DB=null;
+var saveTimer=null;
+
+function load(){ return DB || getD(); }
+
+function save(d){
+  DB=d;
+  clearTimeout(saveTimer);
+  document.getElementById('sync-status').textContent='💾 Salvando...';
+  saveTimer=setTimeout(function(){
+    fetch(SUPA_URL+'/rest/v1/festa_duda?id=eq.dados',{
+      method:'PATCH',
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({dados:DB,atualizado_em:new Date().toISOString()})
+    }).then(function(){
+      saveTimer=null;
+      document.getElementById('sync-status').textContent='✅ Salvo em '+new Date().toLocaleTimeString('pt-BR');
+    }).catch(function(){
+      saveTimer=null;
+      document.getElementById('sync-status').textContent='❌ Erro ao salvar';
+    });
+  },800);
+}
+
+function initDB(silent){
+  if(!silent) document.getElementById('sync-status').textContent='⏳ Carregando...';
+  fetch(SUPA_URL+'/rest/v1/festa_duda?id=eq.dados&select=dados&t='+Date.now(),{
+    cache:'no-store',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Cache-Control':'no-cache'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(rows){
+    DB = (rows&&rows.length>0) ? rows[0].dados : getD();
+    var now = new Date().toLocaleTimeString('pt-BR');
+    document.getElementById('sync-status').textContent='✅ Sincronizado às '+now;
+    var sec = document.querySelector('.section.active');
+    if(sec){
+      var id = sec.id.replace('sec-','');
+      var renders = {dashboard:renderDash,orcamento:renderOrc,convidados:renderConv,fornecedores:renderForn,compras:renderComp,lembrancinhas:renderLemb,checklist:renderCk,pagamentos:renderPag,anotacoes:loadNotes};
+      if(renders[id]) renders[id]();
+    }
+  })
+  .catch(function(){
+    document.getElementById('sync-status').textContent='⚠️ Sem conexão';
+  });
+}
+
+// Auto-refresh a cada 20 segundos, só se não tem save pendente
+setInterval(function(){
+  if(!saveTimer) initDB(true);
+}, 20000);
+
+document.querySelectorAll('.nav-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var sec=this.getAttribute('data-sec');
+    document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+    document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+    document.getElementById('sec-'+sec).classList.add('active');
+    this.classList.add('active');
+    var r={dashboard:renderDash,orcamento:renderOrc,convidados:renderConv,fornecedores:renderForn,compras:renderComp,lembrancinhas:renderLemb,checklist:renderCk,pagamentos:renderPag,anotacoes:loadNotes};
+    if(r[sec])r[sec]();
+  });
+});
+
+function updateCd(){
+  var festa=new Date('2026-07-09T16:00:00'),diff=festa-new Date();
+  if(diff<=0){document.getElementById('countdown').innerHTML='<div style="font-size:1.4rem">🎉 É HOJE!</div>';return;}
+  var d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  document.getElementById('countdown').innerHTML=cu(d,'Dias')+cu(pad(h),'Horas')+cu(pad(m),'Min')+cu(pad(s),'Seg');
+}
+function cu(n,l){return '<div class="cu"><div class="cu-num">'+n+'</div><div class="cu-lbl">'+l+'</div></div>';}
+function pad(n){return String(n).padStart(2,'0');}
+setInterval(updateCd,1000);updateCd();
+
+function renderDash(){
+  var d=load();
+  var tc=d.conv.reduce(function(s,c){return s+Number(c.qtd);},0);
+  var cc=d.conv.filter(function(c){return c.conf==='sim';}).length;
+  var tp=d.orc.reduce(function(s,o){return s+Number(o.prev);},0);
+  var tpg=d.orc.reduce(function(s,o){return s+Number(o.pago);},0);
+  var cd=d.ck.filter(function(c){return c.done;}).length;
+  var cpd=d.comp.filter(function(c){return c.comprado;}).length;
+  document.getElementById('dash-stats').innerHTML=st('👥',tc,'Convidados')+st('✅',cc,'Confirmados')+st('💰','R$'+Math.round(tp),'Previsto')+st('💸','R$'+Math.round(tpg),'Pago')+st('📋',cd+'/'+d.ck.length,'Tarefas')+st('🛒',cpd+'/'+d.comp.length,'Compras');
+  var pc=d.ck.length?Math.round(cd/d.ck.length*100):0;
+  var pv=tc?Math.round(cc/tc*100):0;
+  var pp=tp?Math.round(tpg/tp*100):0;
+  document.getElementById('dash-prog').innerHTML='<div class="card-title">📊 Progresso Geral</div>'+pg('✅ Checklist',pc)+pg('👥 Confirmações',pv)+pg('💳 Pagamentos',pp);
+  var pends=d.ck.filter(function(c){return !c.done;}).slice(0,6);
+  var html='<div class="card-title">⏳ Próximas Pendências</div>';
+  if(!pends.length){html+='<div style="color:var(--success);font-weight:700">🎉 Tudo em dia!</div>';}
+  else{pends.forEach(function(p){html+='<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:.83rem">⭕ '+esc(p.txt)+'</div>';});}
+  document.getElementById('dash-pend').innerHTML=html;
+}
+function st(i,v,l){return '<div class="stat"><div class="stat-icon">'+i+'</div><div class="stat-val">'+v+'</div><div class="stat-lbl">'+l+'</div></div>';}
+function pg(l,p){return '<div class="prog-row"><div class="prog-head"><span>'+l+'</span><span>'+p+'%</span></div><div class="prog-bar"><div class="prog-fill" style="width:'+p+'%"></div></div></div>';}
+
+function renderOrc(){
+  var d=load(),tp=0,tpg=0;
+  var rows=d.orc.map(function(o){
+    tp+=Number(o.prev)||0;tpg+=Number(o.pago)||0;
+    var sal=Math.max(0,(Number(o.prev)||0)-(Number(o.pago)||0));
+    return '<tr><td><input type="text" value="'+esc(o.item)+'" onchange="updOrc('+o.id+',\'item\',this.value)"></td><td><input type="text" value="'+esc(o.cat)+'" onchange="updOrc('+o.id+',\'cat\',this.value)" style="width:100px"></td><td><input type="number" value="'+o.prev+'" onchange="updOrc('+o.id+',\'prev\',this.value)" style="width:80px"></td><td><input type="number" value="'+o.pago+'" onchange="updOrc('+o.id+',\'pago\',this.value)" style="width:80px"></td><td><span class="chip '+(sal>0?'ch-y':'ch-g')+'">R$ '+sal.toFixed(2)+'</span></td><td style="text-align:center"><input type="checkbox" '+(o.ok?'checked':'')+' onchange="updOrc('+o.id+',\'ok\',this.checked)"></td><td><input type="text" value="'+esc(o.obs)+'" onchange="updOrc('+o.id+',\'obs\',this.value)"></td><td><button class="btn btn-danger btn-sm" onclick="delOrc('+o.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-orc').innerHTML=rows||emptyRow(8);
+  document.getElementById('t-prev').textContent='R$ '+tp.toFixed(2);
+  document.getElementById('t-pago').textContent='R$ '+tpg.toFixed(2);
+  document.getElementById('t-pend').textContent='R$ '+(tp-tpg).toFixed(2);
+}
+function updOrc(id,f,v){var d=load(),o=d.orc.find(function(x){return x.id===id;});if(!o)return;if(f==='prev'||f==='pago')o[f]=parseFloat(v)||0;else o[f]=v;save(d);renderOrc();}
+function delOrc(id){var d=load();d.orc=d.orc.filter(function(x){return x.id!==id;});save(d);renderOrc();}
+function addOrc(){var d=load();d.orc.push({id:d.nid.orc++,item:'Novo item',cat:'',prev:0,pago:0,ok:false,obs:''});save(d);renderOrc();}
+
+function renderConv(){
+  var d=load(),na=0,nc=0,nconf=0,i=0;
+  var rows=d.conv.map(function(c){
+    i++;na+=(c.tipo==='adulto'?Number(c.qtd):0);nc+=(c.tipo==='crianca'?Number(c.qtd):0);nconf+=(c.conf==='sim'?Number(c.qtd):0);
+    var sel=function(v){return '<option value="'+v+'" '+(c.conf===v?'selected':'')+'>'+({'sim':'✅ Sim','nao':'❌ Não','incerto':'❓ Incerto'}[v])+'</option>';};
+    return '<tr><td style="font-weight:700;color:var(--soft);width:32px">'+i+'</td><td><input type="text" value="'+esc(c.nome)+'" onchange="updConv('+c.id+',\'nome\',this.value)"></td><td><select onchange="updConv('+c.id+',\'tipo\',this.value)"><option value="adulto" '+(c.tipo==='adulto'?'selected':'')+'>Adulto</option><option value="crianca" '+(c.tipo==='crianca'?'selected':'')+'>Criança</option><option value="adolescente" '+(c.tipo==='adolescente'?'selected':'')+'>Adolescente</option></select></td><td><input type="text" value="'+esc(c.grupo)+'" onchange="updConv('+c.id+',\'grupo\',this.value)" style="width:90px"></td><td><input type="number" value="'+c.qtd+'" onchange="updConv('+c.id+',\'qtd\',this.value)" style="width:50px"></td><td><select onchange="updConv('+c.id+',\'conf\',this.value)">'+sel('sim')+sel('nao')+sel('incerto')+'</select></td><td><input type="text" value="'+esc(c.obs)+'" onchange="updConv('+c.id+',\'obs\',this.value)"></td><td><button class="btn btn-danger btn-sm" onclick="delConv('+c.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-conv').innerHTML=rows||emptyRow(8);
+  document.getElementById('t-adultos').textContent=na;
+  document.getElementById('t-criancas').textContent=nc;
+  document.getElementById('t-conf').textContent=nconf;
+}
+function updConv(id,f,v){var d=load(),o=d.conv.find(function(x){return x.id===id;});if(!o)return;if(f==='qtd')o[f]=parseInt(v)||1;else o[f]=v;save(d);renderConv();}
+function delConv(id){var d=load();d.conv=d.conv.filter(function(x){return x.id!==id;});save(d);renderConv();}
+function addConv(){var d=load();d.conv.push({id:d.nid.conv++,nome:'Novo Convidado',tipo:'adulto',grupo:'',qtd:1,conf:'incerto',obs:''});save(d);renderConv();}
+
+function renderForn(){
+  var d=load();
+  var rows=d.forn.map(function(f){
+    var sal=Math.max(0,(Number(f.contrat)||0)-(Number(f.pago)||0));
+    return '<tr><td><input type="text" value="'+esc(f.cat)+'" onchange="updForn('+f.id+',\'cat\',this.value)" style="width:90px"></td><td><input type="text" value="'+esc(f.nome)+'" onchange="updForn('+f.id+',\'nome\',this.value)"></td><td><input type="text" value="'+esc(f.contato)+'" onchange="updForn('+f.id+',\'contato\',this.value)" placeholder="📱" style="width:110px"></td><td><input type="number" value="'+f.contrat+'" onchange="updForn('+f.id+',\'contrat\',this.value)" style="width:80px"></td><td><input type="number" value="'+f.pago+'" onchange="updForn('+f.id+',\'pago\',this.value)" style="width:80px"></td><td><span class="chip '+(sal>0?'ch-y':'ch-g')+'">R$ '+sal.toFixed(2)+'</span></td><td><input type="date" value="'+f.venc+'" onchange="updForn('+f.id+',\'venc\',this.value)"></td><td style="text-align:center"><input type="checkbox" '+(f.contrato?'checked':'')+' onchange="updForn('+f.id+',\'contrato\',this.checked)"></td><td><select onchange="updForn('+f.id+',\'status\',this.value)"><option value="confirmado" '+(f.status==='confirmado'?'selected':'')+'>✅ Confirmado</option><option value="pendente" '+(f.status==='pendente'?'selected':'')+'>⏳ Pendente</option><option value="cancelado" '+(f.status==='cancelado'?'selected':'')+'>❌ Cancelado</option></select></td><td><button class="btn btn-danger btn-sm" onclick="delForn('+f.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-forn').innerHTML=rows||emptyRow(10);
+}
+function updForn(id,f,v){var d=load(),o=d.forn.find(function(x){return x.id===id;});if(!o)return;if(f==='contrat'||f==='pago')o[f]=parseFloat(v)||0;else o[f]=v;save(d);renderForn();}
+function delForn(id){var d=load();d.forn=d.forn.filter(function(x){return x.id!==id;});save(d);renderForn();}
+function addForn(){var d=load();d.forn.push({id:d.nid.forn++,cat:'',nome:'Novo Fornecedor',contato:'',contrat:0,pago:0,venc:'',contrato:false,status:'pendente'});save(d);renderForn();}
+
+function renderComp(){
+  var d=load();
+  var rows=d.comp.map(function(c){
+    var tot=(Number(c.qtd)||1)*(Number(c.val)||0);
+    var lnk=c.link?'<a href="'+c.link+'" target="_blank" class="lnk">🛍 Ver</a>':'–';
+    return '<tr '+(c.comprado&&c.recebido?'style="opacity:.6"':'')+'>'+
+      '<td><input type="text" value="'+esc(c.item)+'" onchange="updComp('+c.id+',\'item\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(c.cat)+'" onchange="updComp('+c.id+',\'cat\',this.value)" style="width:90px"></td>'+
+      '<td>'+lnk+'</td>'+
+      '<td><input type="number" value="'+c.qtd+'" onchange="updComp('+c.id+',\'qtd\',this.value)" style="width:50px"></td>'+
+      '<td><input type="number" value="'+c.val+'" onchange="updComp('+c.id+',\'val\',this.value)" style="width:75px"></td>'+
+      '<td><strong>R$ '+tot.toFixed(2)+'</strong></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(c.comprado?'checked':'')+' onchange="updComp('+c.id+',\'comprado\',this.checked)"></td>'+
+      '<td style="text-align:center"><input type="checkbox" '+(c.recebido?'checked':'')+' onchange="updComp('+c.id+',\'recebido\',this.checked)"></td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="delComp('+c.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-comp').innerHTML=rows||emptyRow(9);
+}
+function updComp(id,f,v){var d=load(),o=d.comp.find(function(x){return x.id===id;});if(!o)return;if(f==='qtd'||f==='val')o[f]=parseFloat(v)||0;else o[f]=v;save(d);renderComp();}
+function delComp(id){var d=load();d.comp=d.comp.filter(function(x){return x.id!==id;});save(d);renderComp();}
+function addComp(){var d=load();d.comp.push({id:d.nid.comp++,item:'Novo item',cat:'',link:'',qtd:1,val:0,comprado:false,recebido:false});save(d);renderComp();}
+
+function renderLemb(){
+  var d=load();
+  var rows=d.lemb.map(function(l){
+    var tot=(Number(l.qn)||0)*(Number(l.cu)||0);
+    return '<tr><td><input type="text" value="'+esc(l.item)+'" onchange="updLemb('+l.id+',\'item\',this.value)"></td><td><input type="number" value="'+l.qn+'" onchange="updLemb('+l.id+',\'qn\',this.value)" style="width:65px"></td><td><input type="number" value="'+l.qc+'" onchange="updLemb('+l.id+',\'qc\',this.value)" style="width:65px"></td><td><input type="number" value="'+l.cu+'" onchange="updLemb('+l.id+',\'cu\',this.value)" style="width:70px"></td><td><strong>R$ '+tot.toFixed(2)+'</strong></td><td style="text-align:center"><input type="checkbox" '+(l.ok?'checked':'')+' onchange="updLemb('+l.id+',\'ok\',this.checked)"></td><td><button class="btn btn-danger btn-sm" onclick="delLemb('+l.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-lemb').innerHTML=rows||emptyRow(7);
+}
+function updLemb(id,f,v){var d=load(),o=d.lemb.find(function(x){return x.id===id;});if(!o)return;if(['qn','qc','cu'].indexOf(f)>=0)o[f]=parseFloat(v)||0;else o[f]=v;save(d);renderLemb();}
+function delLemb(id){var d=load();d.lemb=d.lemb.filter(function(x){return x.id!==id;});save(d);renderLemb();}
+function addLemb(){var d=load();d.lemb.push({id:d.nid.lemb++,item:'Novo item',qn:1,qc:0,cu:0,ok:false});save(d);renderLemb();}
+
+function renderCk(){
+  var d=load();
+  var html=d.ck.map(function(c){
+    return '<div class="ck-item'+(c.done?' done':'')+'" id="ck-'+c.id+'"><input type="checkbox" '+(c.done?'checked':'')+' onchange="togCk('+c.id+',this.checked)"><span class="ck-txt" contenteditable="true" onblur="editCk('+c.id+',this.textContent)">'+esc(c.txt)+'</span><button class="btn btn-danger btn-sm" onclick="delCk('+c.id+')">🗑</button></div>';
+  }).join('');
+  document.getElementById('ck-list').innerHTML=html||'<div style="color:var(--soft);padding:12px">Adicione uma tarefa!</div>';
+}
+function togCk(id,v){var d=load(),o=d.ck.find(function(x){return x.id===id;});if(o)o.done=v;save(d);renderCk();}
+function editCk(id,v){var d=load(),o=d.ck.find(function(x){return x.id===id;});if(o)o.txt=v.trim();save(d);}
+function delCk(id){var d=load();d.ck=d.ck.filter(function(x){return x.id!==id;});save(d);renderCk();}
+function addCk(){var inp=document.getElementById('ck-input'),txt=inp.value.trim();if(!txt)return;var d=load();d.ck.push({id:d.nid.ck++,txt:txt,done:false});inp.value='';save(d);renderCk();}
+
+function renderPag(){
+  var d=load(),hoje=new Date();
+  var rows=d.pag.map(function(p){
+    var venc=p.venc?new Date(p.venc):null;
+    var atrasado=venc&&!p.pago&&venc<hoje;
+    var prox=venc&&!p.pago&&(venc-hoje)<7*86400000&&(venc-hoje)>=0;
+    return '<tr class="'+(atrasado?'row-alert':prox?'row-alert':'')+'"><td><input type="text" value="'+esc(p.desc)+'" onchange="updPag('+p.id+',\'desc\',this.value)"></td><td><input type="text" value="'+esc(p.forn)+'" onchange="updPag('+p.id+',\'forn\',this.value)" style="width:100px"></td><td><input type="number" value="'+p.val+'" onchange="updPag('+p.id+',\'val\',this.value)" style="width:80px"></td><td><input type="date" value="'+p.venc+'" onchange="updPag('+p.id+',\'venc\',this.value)"></td><td style="text-align:center"><input type="checkbox" '+(p.pago?'checked':'')+' onchange="updPag('+p.id+',\'pago\',this.checked)"></td><td><input type="date" value="'+p.dpag+'" onchange="updPag('+p.id+',\'dpag\',this.value)"></td><td><button class="btn btn-danger btn-sm" onclick="delPag('+p.id+')">🗑</button></td></tr>';
+  }).join('');
+  document.getElementById('tb-pag').innerHTML=rows||emptyRow(7,'Nenhum pagamento cadastrado.');
+}
+function updPag(id,f,v){var d=load(),o=d.pag.find(function(x){return x.id===id;});if(!o)return;if(f==='val')o[f]=parseFloat(v)||0;else o[f]=v;save(d);renderPag();}
+function delPag(id){var d=load();d.pag=d.pag.filter(function(x){return x.id!==id;});save(d);renderPag();}
+function addPag(){var d=load();d.pag.push({id:d.nid.pag++,desc:'',forn:'',val:0,venc:'',pago:false,dpag:''});save(d);renderPag();}
+
+function loadNotes(){var d=load();document.getElementById('notes-ta').value=d.notes||'';}
+function saveNotes(){var d=load();d.notes=document.getElementById('notes-ta').value;save(d);var ok=document.getElementById('notes-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';},2000);}
+
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function emptyRow(cols,msg){return '<tr class="empty-row"><td colspan="'+cols+'">'+(msg||'Nenhum item cadastrado.')+'</td></tr>';}
+
+window.addEventListener('DOMContentLoaded',function(){initDB(false);});
+</script>
+</body>
+</html>
